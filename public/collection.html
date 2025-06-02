@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon - Koleksi Saya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #70a1ff, #1e90ff);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .nav h1 {
+            color: #2c3e50;
+            font-size: 2em;
+            font-weight: 600;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav button {
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+        }
+
+        .tabs {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .tab-button {
+            padding: 12px 25px;
+            border: none;
+            background: #e0e0e0;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: #34495e;
+        }
+
+        .tab-button:hover {
+            background: #d0d0d0;
+            transform: translateY(-2px);
+        }
+
+        .tab-button.active {
+            background: #3498db;
+            color: white;
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card img {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin: 10px 0;
+            font-size: 1.2em;
+            text-transform: capitalize;
+        }
+
+        .pokemon-info {
+            text-align: left;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .pokemon-info p {
+            color: #7f8c8d;
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+
+        .pokemon-stats {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .pokemon-stats h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .stat-bar {
+            margin: 8px 0;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .stat-name {
+            display: inline-block;
+            width: 100px;
+            font-size: 0.9em;
+            color: #34495e;
+            padding: 8px 10px;
+            background: rgba(255, 255, 255, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-value {
+            background: #3498db;
+            color: white;
+            padding: 8px 10px;
+            font-size: 0.9em;
+            text-align: right;
+            transition: width 0.6s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .pokemon-abilities {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .pokemon-abilities h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .ability-tag {
+            display: inline-block;
+            background: #e0e0e0;
+            color: #34495e;
+            padding: 5px 12px;
+            margin: 3px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .hidden-ability {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .level-up-btn, .delete-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .level-up-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .level-up-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+
+        .error {
+            background: #ff7675;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 0.95em;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success {
+            background: #00b894;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 0.95em;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .empty-message h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .empty-message p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .empty-message button {
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .empty-message button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .pokemon-logo {
+            display: block;
+            width: 200px;
+            margin: 0 auto 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png" 
+             alt="Pokemon Logo" class="pokemon-logo">
+             
+        <div class="nav">
+            <h1>Koleksi Pokemon Saya</h1>
+            <div class="nav-buttons">
+                <button onclick="window.location.href='main.html'">Kembali</button>
+                <button onclick="logout()">Keluar</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('pokemon')">Pokemon</button>
+            <button class="tab-button" onclick="showTab('berries')">Berry</button>
+        </div>
+
+        <div id="pokemon-content">
+            <div id="pokemon-grid" class="grid">
+                <!-- Pokemon akan ditampilkan di sini -->
+            </div>
+        </div>
+
+        <div id="berries-content" style="display: none;">
+            <div id="berry-grid" class="grid">
+                <!-- Berry akan ditampilkan di sini -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+
+        function showError(message, containerId) {
+            const container = document.getElementById(containerId);
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = message;
+            container.insertBefore(errorDiv, container.firstChild);
+            setTimeout(() => errorDiv.remove(), 3000);
+        }
+
+        function showSuccess(message, containerId) {
+            const container = document.getElementById(containerId);
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success';
+            successDiv.textContent = message;
+            container.insertBefore(successDiv, container.firstChild);
+            setTimeout(() => successDiv.remove(), 3000);
+        }
+
+        // Load Pokemon dari koleksi
+        async function loadPokemonCollection() {
+            try {
+                const response = await fetch(`${API_URL}/pokemon`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Gagal mengambil data koleksi');
+                }
+
+                const pokemons = await response.json();
+                const pokemonGrid = document.getElementById('pokemon-grid');
+                pokemonGrid.innerHTML = '<div class="loading">Memuat koleksi Pokemon...</div>';
+
+                if (pokemons.length === 0) {
+                    pokemonGrid.innerHTML = `
+                        <div class="empty-message">
+                            <h3>Koleksi Pokemon Kosong</h3>
+                            <p>Belum ada Pokemon dalam koleksi Anda.</p>
+                            <button onclick="window.location.href='main.html'">
+                                Tambah Pokemon Baru
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                pokemonGrid.innerHTML = pokemons.map(pokemon => `
+                    <div class="card">
+                        <img src="${pokemon.image}" alt="${pokemon.name}"
+                             onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
+                        <h3>${pokemon.name}</h3>
+                        <div class="pokemon-info">
+                            <p><strong>Tipe:</strong> ${pokemon.type}</p>
+                            <p><strong>Level:</strong> ${pokemon.level}</p>
+                            <p><strong>Base XP:</strong> ${pokemon.baseExperience}</p>
+                            <p><strong>Height:</strong> ${pokemon.height / 10}m</p>
+                            <p><strong>Weight:</strong> ${pokemon.weight / 10}kg</p>
+                        </div>
+                        
+                        <div class="pokemon-stats">
+                            <h4>Stats</h4>
+                            ${Array.isArray(pokemon.stats) ? pokemon.stats.map(stat => `
+                                <div class="stat-bar">
+                                    <span class="stat-name">${stat.name}</span>
+                                    <div class="stat-value" style="width: ${(stat.value / 255) * 100}%">
+                                        ${stat.value}
+                                    </div>
+                                </div>
+                            `).join('') : '<p>No stats available</p>'}
+                        </div>
+
+                        <div class="pokemon-abilities">
+                            <h4>Abilities</h4>
+                            ${Array.isArray(pokemon.abilities) ? pokemon.abilities.map(ability => `
+                                <span class="ability-tag ${ability.isHidden ? 'hidden-ability' : ''}">
+                                    ${ability.name}
+                                </span>
+                            `).join('') : '<p>No abilities available</p>'}
+                        </div>
+
+                        <div class="card-actions">
+                            <button onclick="levelUpPokemon(${pokemon.id})" class="level-up-btn">
+                                Level Up
+                            </button>
+                            <button onclick="deletePokemon(${pokemon.id})" class="delete-btn">
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                showError('Gagal memuat koleksi Pokemon: ' + error.message, 'pokemon-grid');
+            }
+        }
+
+        // Load Berry dari koleksi
+        async function loadBerryCollection() {
+            try {
+                const response = await fetch(`${API_URL}/berries`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Gagal mengambil data koleksi');
+                }
+
+                const berries = await response.json();
+                const berryGrid = document.getElementById('berry-grid');
+                berryGrid.innerHTML = '<div class="loading">Memuat koleksi Berry...</div>';
+
+                if (berries.length === 0) {
+                    berryGrid.innerHTML = `
+                        <div class="empty-message">
+                            <h3>Koleksi Berry Kosong</h3>
+                            <p>Belum ada Berry dalam koleksi Anda.</p>
+                            <button onclick="window.location.href='main.html'">
+                                Tambah Berry Baru
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                berryGrid.innerHTML = berries.map(berry => `
+                    <div class="card">
+                        <img src="${berry.image}" alt="${berry.name}"
+                             onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/berry.png'">
+                        <h3>${berry.name}</h3>
+                        <p>Efek: ${berry.effect || 'Tidak ada efek'}</p>
+                        <button onclick="deleteBerry(${berry.id})" class="delete-btn">
+                            Hapus dari Koleksi
+                        </button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                showError('Gagal memuat koleksi Berry: ' + error.message, 'berry-grid');
+            }
+        }
+
+        // Level Up Pokemon
+        async function levelUpPokemon(id) {
+            try {
+                const response = await fetch(`${API_URL}/pokemon/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ action: 'levelUp' })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Gagal menaikkan level Pokemon');
+                }
+
+                showSuccess('Level Pokemon berhasil dinaikkan!', 'pokemon-grid');
+                setTimeout(() => loadPokemonCollection(), 1000);
+            } catch (error) {
+                showError(error.message, 'pokemon-grid');
+            }
+        }
+
+        // Hapus Pokemon dari koleksi
+        async function deletePokemon(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus Pokemon ini dari koleksi?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/pokemon/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Gagal menghapus Pokemon');
+                }
+
+                showSuccess('Pokemon berhasil dihapus dari koleksi!', 'pokemon-grid');
+                setTimeout(() => loadPokemonCollection(), 1000);
+            } catch (error) {
+                showError(error.message, 'pokemon-grid');
+            }
+        }
+
+        // Hapus Berry dari koleksi
+        async function deleteBerry(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus Berry ini dari koleksi?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/berries/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Gagal menghapus Berry');
+                }
+
+                showSuccess('Berry berhasil dihapus dari koleksi!', 'berry-grid');
+                setTimeout(() => loadBerryCollection(), 1000);
+            } catch (error) {
+                showError(error.message, 'berry-grid');
+            }
+        }
+
+        function showTab(tabName) {
+            const pokemonContent = document.getElementById('pokemon-content');
+            const berriesContent = document.getElementById('berries-content');
+            const tabs = document.querySelectorAll('.tab-button');
+
+            if (tabName === 'pokemon') {
+                pokemonContent.style.display = 'block';
+                berriesContent.style.display = 'none';
+                tabs[0].classList.add('active');
+                tabs[1].classList.remove('active');
+                loadPokemonCollection();
+            } else {
+                pokemonContent.style.display = 'none';
+                berriesContent.style.display = 'block';
+                tabs[0].classList.remove('active');
+                tabs[1].classList.add('active');
+                loadBerryCollection();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        }
+
+        // Load initial data
+        loadPokemonCollection();
+    </script>
+</body>
+</html> 
